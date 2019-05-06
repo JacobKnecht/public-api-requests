@@ -5,7 +5,7 @@
 *  ==============================================*/
 
 const body = document.querySelector('body');
-const searchContainer = document.querySelector('.search-conntainer');
+const searchContainer = document.querySelector('.search-container');
 const gallery = document.querySelector('.gallery');
 const modalContainer = document.createElement('div');
 
@@ -30,7 +30,17 @@ function setAttributes(element, list) {
 *
 *  ==============================================*/
 
-
+const searchForm = document.createElement('form');
+setAttributes(searchForm, {'action':'#', 'method':'get'});
+const searchInput = document.createElement('input');
+setAttributes(searchInput, {'type':'search', 'class':'search-input',
+  'placeholder':'Search...'});
+const submitButton = document.createElement('input');
+setAttributes(submitButton, {'type':'submit', 'class':'search-submit',
+  'value':'Search'});
+searchForm.appendChild(searchInput);
+searchForm.appendChild(submitButton);
+searchContainer.appendChild(searchForm);
 
 /* ================================================
 *
