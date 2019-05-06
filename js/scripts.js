@@ -4,6 +4,7 @@
 *
 *  ==============================================*/
 
+const url = 'https://randomuser.me/api/?results=12';
 const body = document.querySelector('body');
 const searchContainer = document.querySelector('.search-container');
 const gallery = document.querySelector('.gallery');
@@ -48,7 +49,10 @@ searchContainer.appendChild(searchForm);
 *
 *  ==============================================*/
 
-
+//function to create gallery cards
+// function generateGalleryCards() {
+//
+// }
 
 /* ================================================
 *
@@ -64,7 +68,26 @@ searchContainer.appendChild(searchForm);
 *
 *  ==============================================*/
 
+//function to fetch data from Random User Generator API
+function fetchData(url) {
+  return fetch(url)
+           .then(checkStatus)
+           .then(response => response.json())
+           .catch(error => console.log('Something went wrong with the request: ', error))
+}
 
+//function to check the status of API requests
+function checkStatus(response) {
+  if(response.ok){
+    return Promise.resolve(response);
+  } else {
+    return Promise.reject(new Error(resonse.statusText));
+  }
+}
+
+//logic/processing area 
+const data = fetchData(url);
+console.log(data);
 
 /* ================================================
 *
