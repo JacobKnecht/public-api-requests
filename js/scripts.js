@@ -3,8 +3,8 @@
 *  VARIABLE DECLARATIONS & PAGE SETUP
 *
 *  ==============================================*/
-
-const url = 'https://randomuser.me/api/?results=12';
+const userCount = 12;
+const url = `https://randomuser.me/api/?results=${userCount}`;
 const body = document.querySelector('body');
 const searchContainer = document.querySelector('.search-container');
 const gallery = document.querySelector('.gallery');
@@ -50,9 +50,48 @@ searchContainer.appendChild(searchForm);
 *  ==============================================*/
 
 //function to create gallery cards
-// function generateGalleryCards() {
-//
-// }
+function generateGalleryCards(count) {
+  for(let i = 0; i < count; i++) {
+    //create card div element
+    const card = document.createElement('div');
+    card.setAttribute('class', 'card');
+    //create image container div element
+    const imageContainer = document.createElement('div');
+    imageContainer.setAttribute('class', 'card-img-container');
+    //create card img element
+    const image = document.createElement('img');
+    setAttributes(image, {'class':'card-img',
+      'src':'https://placehold.it/90x90', 'alt':'profile picture'});
+    //append img element to image container and image container to card
+    imageContainer.appendChild(image);
+    card.appendChild(imageContainer);
+    //create info container div element
+    const infoContainer = document.createElement('div');
+    infoContainer.setAttribute('class', 'card-info-container');
+    //create name h3 element
+    const name = document.createElement('h3');
+    setAttributes(name, {'id':'name', 'class':'card-name cap'});
+    name.textContent = 'first last';
+    //create email p element
+    const email = document.createElement('p');
+    email.setAttribute('class', 'card-text');
+    email.textContent = 'email';
+    //create location p element
+    const location = document.createElement('p');
+    location.setAttribute('class', 'card-text cap');
+    email.textContent = 'city, state';
+    //append name, email and location elements to info container
+    infoContainer.appendChild(name);
+    infoContainer.appendChild(email);
+    infoContainer.appendChild(location);
+    //append info container to card
+    card.appendChild(infoContainer);
+    //append card to gallery
+    gallery.appendChild(card);
+  }
+}
+
+generateGalleryCards(userCount);
 
 /* ================================================
 *
@@ -85,7 +124,7 @@ function checkStatus(response) {
   }
 }
 
-//logic/processing area 
+//logic/processing area
 const data = fetchData(url);
 console.log(data);
 
