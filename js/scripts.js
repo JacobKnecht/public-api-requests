@@ -79,7 +79,7 @@ function generateGalleryCards(count) {
     //create location p element
     const location = document.createElement('p');
     location.setAttribute('class', 'card-text cap');
-    email.textContent = 'city, state';
+    location.textContent = 'city, state';
     //append name, email and location elements to info container
     infoContainer.appendChild(name);
     infoContainer.appendChild(email);
@@ -91,6 +91,24 @@ function generateGalleryCards(count) {
   }
 }
 
+//function to populate gallery cards with random user information
+function populateCards(users) {
+  const cards = document.querySelectorAll('.card');
+  for(let i = 0; i < cards.length; i++) {
+    const card = cards[i];
+    const user = users[i];
+    //set card's image to user's profile picture
+    card.firstChild.firstChild.setAttribute('src', user.picture.large);
+    //set card's name to user's name
+    card.lastChild.firstChild.textContent = `${user.name.first} ${user.name.last}`;
+    //set card's email to user's email
+    card.lastChild.childNodes[1].textContent = user.email;
+    //set card's city + state to user's city + state
+    card.lastChild.lastChild.textContent = `${user.location.city}, ${user.location.state}`;
+  }
+}
+
+//create gallery cards
 generateGalleryCards(userCount);
 
 /* ================================================
@@ -125,8 +143,13 @@ function checkStatus(response) {
 }
 
 //logic/processing area
-const data = fetchData(url);
-console.log(data);
+fetchData(url)
+  .then(data => {
+    const users = data.results;
+
+  });
+
+
 
 /* ================================================
 *
