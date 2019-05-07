@@ -12,7 +12,7 @@ const modalContainer = document.createElement('div');
 
 modalContainer.setAttribute('class', 'modal-container');
 modalContainer.style.display = 'none';
-body.appendChild(modalContainer);
+body.insertBefore(modalContainer, body.lastChild);
 
 /* ================================================
 *
@@ -106,9 +106,8 @@ function populateCards(users) {
       .textContent = `${user.name.first} ${user.name.last}`;
     //set card's email to user's email
     card.lastChild.childNodes[1].textContent = user.email;
-    //set card's city + state to user's city + state
-    card.lastChild.lastChild
-      .textContent = `${user.location.city}, ${user.location.state}`;
+    //set card's city to user's city
+    card.lastChild.lastChild.textContent = `${user.location.city}`;
   }
 }
 
@@ -122,6 +121,90 @@ generateGalleryCards(userCount);
 *  ==============================================*/
 
 //function to create a modal item
+function generateModalItems(count) {
+  for(let i = 0; i < count; i++) {
+    //create modal div element
+    const modal = document.createElement('div');
+    modal.setAttribute('class', 'modal');
+    //create and append modal close button markup
+    const closeButton = document.createElement('button');
+    setAttributes(closeButton, {'type':'button', 'id':'modal-close-btn',
+      'class':'modal-close-btn'});
+    closeButton.innerHTML = `<strong>X</strong>`;
+    modal.appendChild(closeButton);
+    //create modal info container
+    const infoContainer = document.createElement('div');
+    infoContainer.setAttribute('class', 'modal-info-container');
+    //create and append modal image markup
+    const image = document.createElement('img');
+    setAttributes(image, {'class':'modal-img',
+      'src':'https://placehold.it/125x125', 'alt':'profile picture'});
+    infoContainer.appendChild(image);
+    //create and append modal name markup
+    const name = document.createElement('h3');
+    name.setAttribute('class', 'modal-name cap');
+    name.textContent = 'first last';
+    infoContainer.appendChild(name);
+    //create and append modal email markup
+    const email = document.createElement('p');
+    email.setAttribute('class', 'modal-text');
+    email.textContent = 'email';
+    infoContainer.appendChild(email);
+    //create and append modal city markup
+    const city = document.createElement('p');
+    city.setAttribute('class', 'modal-text cap');
+    city.textContent = 'city';
+    infoContainer.appendChild(city);
+    //create and append modal hr markup
+    const hr = document.createElement('hr');
+    infoContainer.appendChild(hr);
+    //create and append modal phone markup
+    const phone = document.createElement('p');
+    phone.setAttribute('class', 'modal-text');
+    phone.textContent = 'phone';
+    infoContainer.appendChild(phone);
+    //create and append modal address markup
+    const address = document.createElement('p');
+    address.setAttribute('class', 'modal-text');
+    address.textContent = 'address';
+    infoContainer.appendChild(address);
+    //create and append modal date of birth markup
+    const dob = document.createElement('p');
+    dob.setAttribute('class', 'modal-text');
+    dob.textContent = 'dob';
+    infoContainer.appendChild(dob);
+    //append modal info container to modal item and remove it from view
+    modal.appendChild(infoContainer);
+    modal.style.display = 'none';
+    //append modal item to modal container
+    modalContainer.appendChild(modal);
+  }
+}
+
+//function to populate modal items with random user information
+function populateModalItems(users) {
+  const modals = document.querySelectorAll('.modal');
+  for(let i = 0; i < modals.length; i++) {
+    const modal = modals[i];
+    const user = users[i];
+    //set modal item's image to user's profile picture
+    modal.lastChild.firstChild.setAttribute('src', user.picture.large);
+    //set modal item's name to user's name
+    modal.lastChild.childNodes[1]
+      .textContent = `${user.name.first} ${user.name.last}`;
+    //set modal item's email to user's email
+    modal.lastChild.childNodes[2].textContent = user.email;
+    //set modal item's city to user's city
+    modal.lastChild.childNodes[3].textContent = user.location.city;
+    //set modal item's cell phone to user's cell phone
+    modal.lastChild.childNodes[5].textContent = user.cell;
+    //set modal item's address to user's address
+    modal.lastChild.childNodes[6]
+      .textContent = `${user.location.street}, ${user.location.state} ${user.location.postcode}`;
+    //set modal item's date of birth to user's date of birth
+    modal.lastChild.lastChild.textContent = user.dob.date;
+  }
+}
 
 //function to create 'previous' and 'next' buttons in the modal container
 function createModalToggleButtons() {
@@ -140,6 +223,10 @@ function createModalToggleButtons() {
   modalContainer.appendChild(modalButtonContainer);
 }
 
+//create modal items and buttons
+generateModalItems(userCount);
+createModalToggleButtons();
+
 /* ================================================
 *
 *  RANDOM USER GENERATOR API REQUEST LOGIC
@@ -151,7 +238,8 @@ function fetchData(url) {
   return fetch(url)
            .then(checkStatus)
            .then(response => response.json())
-           .catch(error => console.log('Something went wrong with the request: ', error))
+           .catch(error => console
+             .log('Something went wrong with the request: ', error))
 }
 
 //function to check the status of API requests
@@ -165,9 +253,12 @@ function checkStatus(response) {
 
 //logic/processing area
 fetchData(url)
-  .then(data => populateCards(data.results))
+  .then(data => {
+    populateCards(data.results);
+    return data;
+  })
+  .then(data => populateModalItems(data.results))
   .catch(error => console.log('There was an error...', error));
-
 
 
 /* ================================================
