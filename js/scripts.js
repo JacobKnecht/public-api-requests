@@ -128,8 +128,7 @@ function generateModalItems(count) {
     modal.setAttribute('class', 'modal');
     //create and append modal close button markup
     const closeButton = document.createElement('button');
-    setAttributes(closeButton, {'type':'button', 'id':'modal-close-btn',
-      'class':'modal-close-btn'});
+    setAttributes(closeButton, {'type':'button', 'class':'modal-close-btn'});
     closeButton.innerHTML = `<strong>X</strong>`;
     modal.appendChild(closeButton);
     //create modal info container
@@ -280,3 +279,9 @@ document.querySelectorAll('.card').forEach(card => {
 })
 
 //event listener to close modal window when modal close button is clicked
+document.querySelectorAll('.modal-close-btn').forEach(button => {
+  button.addEventListener('click', function() {
+    this.parentNode.style.display = 'none';
+    modalContainer.style.display = 'none';
+  })
+})
