@@ -11,6 +11,8 @@ const gallery = document.querySelector('.gallery');
 const modalContainer = document.createElement('div');
 
 modalContainer.setAttribute('class', 'modal-container');
+modalContainer.style.display = 'none';
+body.appendChild(modalContainer);
 
 /* ================================================
 *
@@ -100,11 +102,13 @@ function populateCards(users) {
     //set card's image to user's profile picture
     card.firstChild.firstChild.setAttribute('src', user.picture.large);
     //set card's name to user's name
-    card.lastChild.firstChild.textContent = `${user.name.first} ${user.name.last}`;
+    card.lastChild.firstChild
+      .textContent = `${user.name.first} ${user.name.last}`;
     //set card's email to user's email
     card.lastChild.childNodes[1].textContent = user.email;
     //set card's city + state to user's city + state
-    card.lastChild.lastChild.textContent = `${user.location.city}, ${user.location.state}`;
+    card.lastChild.lastChild
+      .textContent = `${user.location.city}, ${user.location.state}`;
   }
 }
 
@@ -117,7 +121,24 @@ generateGalleryCards(userCount);
 *
 *  ==============================================*/
 
+//function to create a modal item
 
+//function to create 'previous' and 'next' buttons in the modal container
+function createModalToggleButtons() {
+  const modalButtonContainer = document.createElement('div');
+  modalButtonContainer.setAttribute('class', 'modal-btn-container');
+  const prevButton = document.createElement('div');
+  setAttributes(prevButton, {'type':'button', 'id':'modal-prev',
+    'class':'modal-prev btn', });
+  prevButton.textContent = 'Prev';
+  const nextButton = document.createElement('div');
+  setAttributes(nextButton, {'type':'button', 'id':'modal-next',
+    'class':'modal-next btn', });
+  nextButton.textContent = 'Next';
+  modalButtonContainer.appendChild(prevButton);
+  modalButtonContainer.appendChild(nextButton);
+  modalContainer.appendChild(modalButtonContainer);
+}
 
 /* ================================================
 *
@@ -144,10 +165,8 @@ function checkStatus(response) {
 
 //logic/processing area
 fetchData(url)
-  .then(data => {
-    const users = data.results;
-
-  });
+  .then(data => populateCards(data.results))
+  .catch(error => console.log('There was an error...', error));
 
 
 
@@ -156,3 +175,12 @@ fetchData(url)
 *  EVENT LISTENERS
 *
 *  ==============================================*/
+
+//event listener to generate modal items when gallery cards are clicked
+document.querySelectorAll('.card').forEach(card => {
+  card.addEventListener('click', function() {
+    console.log(card.lastChild.firstChild.textContent);
+  })
+})
+
+//event listener to close modal window when modal close button is clicked
