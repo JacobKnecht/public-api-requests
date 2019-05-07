@@ -270,7 +270,12 @@ fetchData(url)
 //event listener to generate modal items when gallery cards are clicked
 document.querySelectorAll('.card').forEach(card => {
   card.addEventListener('click', function() {
-    console.log(card.lastChild.firstChild.textContent);
+    document.querySelectorAll('.modal').forEach(modal => {
+      if(modal.lastChild.childNodes[1].textContent === card.lastChild.firstChild.textContent) {
+        modalContainer.style.display = '';
+        modal.style.display = '';
+      }
+    })
   })
 })
 
