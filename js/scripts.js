@@ -4,11 +4,16 @@
 *
 *  ==============================================*/
 const userCount = 12;
-const url = `https://randomuser.me/api/?results=${userCount}`;
+//English alphabet nationalities in Random User Generator API:
+//AU, BR, CA, CH, DE, DK, ES, FI, FR, GB, IE, NO, NL, NZ, US
+const nationalities = '&nat=au,br,ca,ch,de,dk,es,fi,fr,gb,ie,no,nl,nz,us';
+const url = `https://randomuser.me/api/?results=${userCount}${nationalities}`;
 const body = document.querySelector('body');
 const searchContainer = document.querySelector('.search-container');
 const gallery = document.querySelector('.gallery');
 const modalContainer = document.createElement('div');
+const prevButton = document.createElement('div');
+const nextButton = document.createElement('div');
 
 modalContainer.setAttribute('class', 'modal-container');
 modalContainer.style.display = 'none';
@@ -81,7 +86,7 @@ function generateGalleryCards(count) {
     //create location p element
     const location = document.createElement('p');
     location.setAttribute('class', 'card-text cap');
-    location.textContent = 'city, state';
+    location.textContent = 'city';
     //append name, email and location elements to info container
     infoContainer.appendChild(name);
     infoContainer.appendChild(email);
@@ -209,11 +214,11 @@ function populateModalItems(users) {
 function createModalToggleButtons() {
   const modalButtonContainer = document.createElement('div');
   modalButtonContainer.setAttribute('class', 'modal-btn-container');
-  const prevButton = document.createElement('div');
+
   setAttributes(prevButton, {'type':'button', 'id':'modal-prev',
     'class':'modal-prev btn', });
   prevButton.textContent = 'Prev';
-  const nextButton = document.createElement('div');
+
   setAttributes(nextButton, {'type':'button', 'id':'modal-next',
     'class':'modal-next btn', });
   nextButton.textContent = 'Next';
@@ -283,5 +288,35 @@ document.querySelectorAll('.modal-close-btn').forEach(button => {
   button.addEventListener('click', function() {
     this.parentNode.style.display = 'none';
     modalContainer.style.display = 'none';
+  })
+})
+
+//event listener to filter the gallery cards based on the search term
+//in the input field within the search form
+searchForm.addEventListener('submit', function() {
+  const input = document.querySelector('.search-input');
+  const cards = document.querySelectorAll('.card');
+})
+
+//event listeners to switch between different users in the modal window
+//'previous' button event listener
+prevButton.addEventListener('click', function() {
+  document.querySelectorAll('.modal').forEach(modal => {
+    if(modal.style.display === '' && modal.previousElementSibling !== null) {
+      modal.style.display = 'none';
+      modal.previousElementSibling.style.display = '';
+    }
+  })
+})
+
+//'next' button event listener
+nextButton.addEventListener('click', function() {
+  let flag = true;
+  document.querySelectorAll('.modal').forEach(modal => {
+    if(modal.style.display === '' && modal.nextElementSibling.className !== 'modal-btn-container' && flag) {
+      modal.style.display = 'none';
+      modal.nextElementSibling.style.display = '';
+      flag = false;
+    }
   })
 })
