@@ -32,6 +32,16 @@ function setAttributes(element, list) {
   }
 }
 
+//function to create elements, set their attributes, and initialize their text
+function initializeElement(elementName, attributes, text = null) {
+  const element = document.createElement(elementName);
+  setAttributes(element, attributes);
+  if(text !== null) {
+    element.textContent = text;
+  }
+  return element;
+}
+
 //function to determine if modal item's corresponding card is visible
 function determineMatchVisibility(modal) {
   const modalName = modal.lastChild.childNodes[1].textContent;
