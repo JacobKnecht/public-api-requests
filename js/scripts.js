@@ -352,13 +352,29 @@ function determineMatchVisibility(modal) {
 }
 
 //'next' button event listener
-// nextButton.addEventListener('click', function() {
-//   let flag = true;
-//   document.querySelectorAll('.modal').forEach(modal => {
-//     if(modal.style.display === '' && modal.nextElementSibling.className !== 'modal-btn-container' && flag) {
-//       modal.style.display = 'none';
-//       modal.nextElementSibling.style.display = '';
-//       flag = false;
-//     }
-//   })
-// })
+nextButton.addEventListener('click', function() {
+  //flag turns off once we have met the first open modal item; prevents the
+  //event listener from processing each item as valid until the end of the list
+  let flag = true;
+  document.querySelectorAll('.modal').forEach(modal => {
+    let foundVisibleNext = false;
+    let nextModal = modal.nextElementSibling;
+    if(modal.style.display === '' && modal.nextElementSibling.className !== 'modal-btn-container' && flag) {
+      if(determineMatchVisibility(nextModal)) {
+        foundVisibleNext = true;
+      } else {
+          while(!foundVisibleNext && nextModal.nextElementSibling.className !== 'modal-btn-container') {
+            nextModal = nextModal.nextElementSibling;
+            if(determineMatchVisibility(nextModal)) {
+              foundVisibleNext = true;
+            }
+          }
+      }
+    }
+    if(foundVisibleNext) {
+      modal.style.display = 'none';
+      nextModal.style.display = '';
+      flag = false;
+    }
+  })
+})
