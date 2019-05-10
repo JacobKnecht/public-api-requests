@@ -1,8 +1,9 @@
-/* ===================================== 
+/* =====================================
    Public API Request
 ======================================== */
 
 @import url('https://fonts.googleapis.com/css?family=Nunito');
+@import url('https://fonts.googleapis.com/css?family=Fredericka+the+Great|Michroma'); /*change/add*/
 
 * {
 	box-sizing: border-box;
@@ -14,9 +15,9 @@ html, body {
 }
 
 body {
-    font-family: "Nunito", sans-serif;
+    font-family: 'Nunito', sans-serif; /*change*/
     text-align: center;
-    background: rgba(235, 235, 235, 0.9);
+    background: rgba(0, 51, 102, 0.9); /*change*/
 }
 
 header {
@@ -29,8 +30,9 @@ header {
 }
 
 header h1 {
+	  font-family: 'Fredericka the Great', cursive; /*change/add*/
     font-size: 1.25em;
-    color: rgba(50, 50, 50, 0.9);
+    color: rgba(255, 255, 255, 0.9); /*change*/
     margin-top: 35px;
 }
 
@@ -63,7 +65,7 @@ header h1 {
 }
 
 
-/* ===================================== 
+/* =====================================
    Gallery
 ======================================== */
 
@@ -76,7 +78,7 @@ header h1 {
     max-width: 1200px;
     margin: auto;
 }
-  
+
 .card {
     display: flex;
     flex-direction: row;
@@ -105,6 +107,7 @@ header h1 {
 }
 
 .card-name {
+		font-family: 'Fredericka the Great', cursive; /*change/add*/
     margin: 20px auto 0;
 }
 
@@ -120,7 +123,7 @@ header h1 {
 }
 
 
-/* ===================================== 
+/* =====================================
    Modal
 ======================================== */
 
@@ -165,6 +168,7 @@ header h1 {
 }
 
 .modal-name {
+		font-family: 'Fredericka the Great', cursive; /*change/add*/
     margin-bottom: 5px;
 }
 
@@ -206,13 +210,13 @@ header h1 {
     transition: .4s ease-out;
     outline: none;
   }
-  
 
-/* ===================================== 
+
+/* =====================================
    Media Queries
 ======================================== */
 
-/* ===================================== 
+/* =====================================
    Tablet
 ======================================== */
 
@@ -240,9 +244,9 @@ header h1 {
 }
 
 
-/* ===================================== 
+/* =====================================
    Desktop
-   Hover styles on desktop 
+   Hover styles on desktop
 ======================================== */
 
 @media (min-width: 1024px) {
@@ -250,14 +254,15 @@ header h1 {
     .card:hover {
         background: rgba(255, 255, 255, 1);
         border: 1px solid rgba(50, 50, 50, 0.9);
+				box-shadow: 1px 1px 5px inset, -1px -1px 5px inset; /*change/add*/
     }
 
     .card:hover .card-text {
-        color: rgba(25, 25, 25, 1); 
+        color: rgba(25, 25, 25, 1);
     }
 
     .btn:hover {
         background: rgba(255, 255, 255, 1);
-        color: rgba(25, 25, 25, 1); 
+        color: rgba(25, 25, 25, 1);
     }
 }
