@@ -32,6 +32,25 @@ function setAttributes(element, list) {
   }
 }
 
+//function to determine if modal item's corresponding card is visible
+function determineMatchVisibility(modal) {
+  const modalName = modal.lastChild.childNodes[1].textContent;
+  const visibleNames = [];
+  const cards = document.querySelectorAll('.card');
+  cards.forEach(card => {
+    if(card.getAttribute('style') === null ||
+      card.getAttribute('style') === '') { //card is visible
+        visibleNames.push(card.lastChild.firstChild.textContent);
+    }
+  })
+  console.log(visibleNames);
+  if(visibleNames.includes(modalName)) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
 /* ================================================
 *
 *  SEARCH MARKUP GENERATION
@@ -331,25 +350,6 @@ prevButton.addEventListener('click', function() {
     }
   })
 })
-
-//function to determine if modal item's corresponding card is visible
-function determineMatchVisibility(modal) {
-  const modalName = modal.lastChild.childNodes[1].textContent;
-  const visibleNames = [];
-  const cards = document.querySelectorAll('.card');
-  cards.forEach(card => {
-    if(card.getAttribute('style') === null ||
-      card.getAttribute('style') === '') { //card is visible
-        visibleNames.push(card.lastChild.firstChild.textContent);
-    }
-  })
-  console.log(visibleNames);
-  if(visibleNames.includes(modalName)) {
-    return true;
-  } else {
-    return false;
-  }
-}
 
 //'next' button event listener
 nextButton.addEventListener('click', function() {
