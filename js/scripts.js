@@ -295,28 +295,53 @@ document.querySelectorAll('.modal-close-btn').forEach(button => {
 //in the input field within the search form
 searchForm.addEventListener('submit', function() {
   const input = document.querySelector('.search-input');
-  const cards = document.querySelectorAll('.card');
+  document.querySelectorAll('.card').forEach(card => {
+    const name = card.lastChild.firstChild.textContent.toLowerCase();
+    if(name.includes(input.value.toLowerCase())) {
+      card.style.display = '';
+    } else {
+      card.style.display = 'none';
+    }
+  })
 })
 
 //event listeners to switch between different users in the modal window
 //'previous' button event listener
 prevButton.addEventListener('click', function() {
   document.querySelectorAll('.modal').forEach(modal => {
-    if(modal.style.display === '' && modal.previousElementSibling !== null) {
-      modal.style.display = 'none';
-      modal.previousElementSibling.style.display = '';
+    const prevModal = modal.previousElementSibling;
+    if(modal.style.display === '' && prevModal !== null) {
+        modal.style.display = 'none';
+        modal.previousElementSibling.style.display = '';
     }
   })
 })
 
-//'next' button event listener
-nextButton.addEventListener('click', function() {
-  let flag = true;
-  document.querySelectorAll('.modal').forEach(modal => {
-    if(modal.style.display === '' && modal.nextElementSibling.className !== 'modal-btn-container' && flag) {
-      modal.style.display = 'none';
-      modal.nextElementSibling.style.display = '';
-      flag = false;
+//function to determine if modal item's corresponding card is visible
+function determineMatchVisibility(modal) {
+  const modalName = modal.lastChild.childNodes[1].textContent;
+  const visibleNames = [];
+  const cards = document.querySelectorAll('.card');
+  cards.forEach(card => {
+    if(card.getAttribute('style') === null) { //card is visible
+      visibleNames.push(card.lastChild.firstChild.textContent);
     }
   })
-})
+  if(visibleNames.includes(modalName)) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+//'next' button event listener
+// nextButton.addEventListener('click', function() {
+//   let flag = true;
+//   document.querySelectorAll('.modal').forEach(modal => {
+//     if(modal.style.display === '' && modal.nextElementSibling.className !== 'modal-btn-container' && flag) {
+//       modal.style.display = 'none';
+//       modal.nextElementSibling.style.display = '';
+//       flag = false;
+//     }
+//   })
+// })
