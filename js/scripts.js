@@ -210,6 +210,7 @@ function populateModalItems(users) {
   for(let i = 0; i < modals.length; i++) {
     const modal = modals[i];
     const user = users[i];
+    const formatedDOB = user.dob.date.substring(0, user.dob.date.indexOf('T'));
     //set modal item's image to user's profile picture
     modal.lastChild.firstChild.setAttribute('src', user.picture.large);
     //set modal item's name to user's name
@@ -225,7 +226,7 @@ function populateModalItems(users) {
     modal.lastChild.childNodes[6]
       .textContent = `${user.location.street}, ${user.location.state} ${user.location.postcode}`;
     //set modal item's date of birth to user's date of birth
-    modal.lastChild.lastChild.textContent = user.dob.date;
+    modal.lastChild.lastChild.textContent = formatedDOB;
   }
 }
 
