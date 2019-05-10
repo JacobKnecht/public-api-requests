@@ -67,14 +67,11 @@ function determineMatchVisibility(modal) {
 *
 *  ==============================================*/
 
-const searchForm = document.createElement('form');
-setAttributes(searchForm, {'action':'#', 'method':'get'});
-const searchInput = document.createElement('input');
-setAttributes(searchInput, {'type':'search', 'class':'search-input',
-  'placeholder':'Search...'});
-const submitButton = document.createElement('input');
-setAttributes(submitButton, {'type':'submit', 'class':'search-submit',
-  'value':'Search'});
+const searchForm = initializeElement('form', {'action':'#', 'method':'get'});
+const searchInput = initializeElement('input', {'type':'search',
+  'class':'search-input', 'placeholder':'Search...'});
+const submitButton = initializeElement('input', {'type':'submit',
+  'class':'search-submit', 'value':'Search'});
 searchForm.appendChild(searchInput);
 searchForm.appendChild(submitButton);
 searchContainer.appendChild(searchForm);
@@ -89,33 +86,26 @@ searchContainer.appendChild(searchForm);
 function generateGalleryCards(count) {
   for(let i = 0; i < count; i++) {
     //create card div element
-    const card = document.createElement('div');
-    card.setAttribute('class', 'card');
+    const card = initializeElement('div', {'class':'card'});
     //create image container div element
-    const imageContainer = document.createElement('div');
-    imageContainer.setAttribute('class', 'card-img-container');
+    const imageContainer = initializeElement('div',
+      {'class':'card-img-container'});
     //create card img element
-    const image = document.createElement('img');
-    setAttributes(image, {'class':'card-img',
+    const image = initializeElement('img', {'class':'card-img',
       'src':'https://placehold.it/90x90', 'alt':'profile picture'});
     //append img element to image container and image container to card
     imageContainer.appendChild(image);
     card.appendChild(imageContainer);
     //create info container div element
-    const infoContainer = document.createElement('div');
-    infoContainer.setAttribute('class', 'card-info-container');
+    const infoContainer = initializeElement('div',
+      {'class':'card-info-container'});
     //create name h3 element
-    const name = document.createElement('h3');
-    setAttributes(name, {'id':'name', 'class':'card-name cap'});
-    name.textContent = 'first last';
+    const name = initializeElement('h3', {'id':'name',
+      'class':'card-name cap'}, 'first last');
     //create email p element
-    const email = document.createElement('p');
-    email.setAttribute('class', 'card-text');
-    email.textContent = 'email';
+    const email = initializeElement('p', {'class':'card-text'}, 'email');
     //create location p element
-    const location = document.createElement('p');
-    location.setAttribute('class', 'card-text cap');
-    location.textContent = 'city';
+    const location = initializeElement('p', {'class':'card-text cap'}, 'city');
     //append name, email and location elements to info container
     infoContainer.appendChild(name);
     infoContainer.appendChild(email);
@@ -158,53 +148,39 @@ generateGalleryCards(userCount);
 function generateModalItems(count) {
   for(let i = 0; i < count; i++) {
     //create modal div element
-    const modal = document.createElement('div');
-    modal.setAttribute('class', 'modal');
+    const modal = initializeElement('div', {'class':'modal'});
     //create and append modal close button markup
-    const closeButton = document.createElement('button');
-    setAttributes(closeButton, {'type':'button', 'class':'modal-close-btn'});
+    const closeButton = initializeElement('button',
+      {'type':'button', 'class':'modal-close-btn'});
     closeButton.innerHTML = `<strong>X</strong>`;
     modal.appendChild(closeButton);
     //create modal info container
-    const infoContainer = document.createElement('div');
-    infoContainer.setAttribute('class', 'modal-info-container');
+    const infoContainer = initializeElement('div',
+      {'class':'modal-info-container'});
     //create and append modal image markup
-    const image = document.createElement('img');
-    setAttributes(image, {'class':'modal-img',
+    const image = initializeElement('img', {'class':'modal-img',
       'src':'https://placehold.it/125x125', 'alt':'profile picture'});
     infoContainer.appendChild(image);
     //create and append modal name markup
-    const name = document.createElement('h3');
-    name.setAttribute('class', 'modal-name cap');
-    name.textContent = 'first last';
+    const name = initializeElement('h3', {'class':'modal-name cap'}, 'first last');
     infoContainer.appendChild(name);
     //create and append modal email markup
-    const email = document.createElement('p');
-    email.setAttribute('class', 'modal-text');
-    email.textContent = 'email';
+    const email = initializeElement('p', {'class':'modal-text'}, 'email');
     infoContainer.appendChild(email);
     //create and append modal city markup
-    const city = document.createElement('p');
-    city.setAttribute('class', 'modal-text cap');
-    city.textContent = 'city';
+    const city = initializeElement('p', {'class':'modal-text cap'}, 'city');
     infoContainer.appendChild(city);
     //create and append modal hr markup
     const hr = document.createElement('hr');
     infoContainer.appendChild(hr);
     //create and append modal phone markup
-    const phone = document.createElement('p');
-    phone.setAttribute('class', 'modal-text');
-    phone.textContent = 'phone';
+    const phone = initializeElement('p', {'class':'modal-text'}, 'phone');
     infoContainer.appendChild(phone);
     //create and append modal address markup
-    const address = document.createElement('p');
-    address.setAttribute('class', 'modal-text');
-    address.textContent = 'address';
+    const address = initializeElement('p', {'class':'modal-text'}, 'address');
     infoContainer.appendChild(address);
     //create and append modal date of birth markup
-    const dob = document.createElement('p');
-    dob.setAttribute('class', 'modal-text');
-    dob.textContent = 'dob';
+    const dob = initializeElement('p', {'class':'modal-text'}, 'dob');
     infoContainer.appendChild(dob);
     //append modal info container to modal item and remove it from view
     modal.appendChild(infoContainer);
@@ -242,13 +218,13 @@ function populateModalItems(users) {
 
 //function to create 'previous' and 'next' buttons in the modal container
 function createModalToggleButtons() {
-  const modalButtonContainer = document.createElement('div');
-  modalButtonContainer.setAttribute('class', 'modal-btn-container');
-
+  const modalButtonContainer = initializeElement('div',
+    {'class':'modal-btn-container'});
+  //set attributes for 'previous' button
   setAttributes(prevButton, {'type':'button', 'id':'modal-prev',
     'class':'modal-prev btn', });
   prevButton.textContent = 'Prev';
-
+  //set attributes for 'next' button
   setAttributes(nextButton, {'type':'button', 'id':'modal-next',
     'class':'modal-next btn', });
   nextButton.textContent = 'Next';
@@ -305,9 +281,10 @@ fetchData(url)
 document.querySelectorAll('.card').forEach(card => {
   card.addEventListener('click', function() {
     document.querySelectorAll('.modal').forEach(modal => {
-      if(modal.lastChild.childNodes[1].textContent === card.lastChild.firstChild.textContent) {
-        modalContainer.style.display = '';
-        modal.style.display = '';
+      if(modal.lastChild.childNodes[1].textContent ===
+        card.lastChild.firstChild.textContent) {
+          modalContainer.style.display = '';
+          modal.style.display = '';
       }
     })
   })
@@ -341,20 +318,29 @@ prevButton.addEventListener('click', function() {
   document.querySelectorAll('.modal').forEach(modal => {
     let foundVisiblePrev = false;
     let prevModal = modal.previousElementSibling;
-    //modal item for first gallery card is invalid as there are no elements before it in the list
-    if(modal.style.display === '' && prevModal !== null) { //find current open modal item that isn't the first
-      //if previous modal item's card is visible in the gallery you are good to go
+    //modal item for first gallery card is invalid as there are
+    //no elements before it in the list
+    //find current open modal item that isn't the first
+    if(modal.style.display === '' && prevModal !== null) {
+      //if previous modal item's card is visible in the gallery
+      //you are good to go
       if(determineMatchVisibility(prevModal)) {
         foundVisiblePrev = true;
-      } else { //if previous modal item's card is invisible, find most recent visible previous valid card
-          while(!foundVisiblePrev && prevModal.previousElementSibling !== null) { //while valid previous modal item isn't found
-            prevModal = prevModal.previousElementSibling; //move to next most previous modal item
-            if(determineMatchVisibility(prevModal)) { //check if this item has a visible gallery card
+      } else {
+          //if previous modal item's card is invisible,
+          //find most recent visible previous valid card
+          //while valid previous modal item isn't found
+          while(!foundVisiblePrev && prevModal.previousElementSibling !== null) {
+            //move to next most previous modal item
+            prevModal = prevModal.previousElementSibling;
+            //check if this item has a visible gallery card
+            if(determineMatchVisibility(prevModal)) {
               foundVisiblePrev = true; //found viable previous modal item
             }
           } //no more modal items to process
       }
-      if(foundVisiblePrev) { //previous modal item's matching gallery card is visible, can proceed
+      if(foundVisiblePrev) {
+        //previous modal item's matching gallery card is visible, can proceed
         modal.style.display = 'none';
         prevModal.style.display = '';
       }
@@ -370,17 +356,19 @@ nextButton.addEventListener('click', function() {
   document.querySelectorAll('.modal').forEach(modal => {
     let foundVisibleNext = false;
     let nextModal = modal.nextElementSibling;
-    if(modal.style.display === '' && modal.nextElementSibling.className !== 'modal-btn-container' && flag) {
-      if(determineMatchVisibility(nextModal)) {
-        foundVisibleNext = true;
-      } else {
-          while(!foundVisibleNext && nextModal.nextElementSibling.className !== 'modal-btn-container') {
-            nextModal = nextModal.nextElementSibling;
-            if(determineMatchVisibility(nextModal)) {
-              foundVisibleNext = true;
+    if(modal.style.display === '' &&
+      modal.nextElementSibling.className !== 'modal-btn-container' && flag) {
+        if(determineMatchVisibility(nextModal)) {
+          foundVisibleNext = true;
+        } else {
+            while(!foundVisibleNext &&
+              nextModal.nextElementSibling.className !== 'modal-btn-container') {
+                nextModal = nextModal.nextElementSibling;
+                if(determineMatchVisibility(nextModal)) {
+                  foundVisibleNext = true;
+                }
             }
-          }
-      }
+        }
     }
     if(foundVisibleNext) {
       modal.style.display = 'none';
