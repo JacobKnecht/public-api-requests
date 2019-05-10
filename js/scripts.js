@@ -309,10 +309,25 @@ searchForm.addEventListener('submit', function() {
 //'previous' button event listener
 prevButton.addEventListener('click', function() {
   document.querySelectorAll('.modal').forEach(modal => {
-    const prevModal = modal.previousElementSibling;
-    if(modal.style.display === '' && prevModal !== null) {
+    let foundVisiblePrev = false;
+    let prevModal = modal.previousElementSibling;
+    //modal item for first gallery card is invalid as there are no elements before it in the list
+    if(modal.style.display === '' && prevModal !== null) { //find current open modal item that isn't the first
+      //if previous modal item's card is visible in the gallery you are good to go
+      if(determineMatchVisibility(prevModal)) {
+        foundVisiblePrev = true;
+      } else { //if previous modal item's card is invisible, find most recent visible previous valid card
+          while(!foundVisiblePrev && prevModal.previousElementSibling !== null) { //while valid previous modal item isn't found
+            prevModal = prevModal.previousElementSibling; //move to next most previous modal item
+            if(determineMatchVisibility(prevModal)) { //check if this item has a visible gallery card
+              foundVisiblePrev = true; //found viable previous modal item
+            }
+          } //no more modal items to process
+      }
+      if(foundVisiblePrev) { //previous modal item's matching gallery card is visible, can proceed
         modal.style.display = 'none';
-        modal.previousElementSibling.style.display = '';
+        prevModal.style.display = '';
+      }
     }
   })
 })
@@ -323,10 +338,12 @@ function determineMatchVisibility(modal) {
   const visibleNames = [];
   const cards = document.querySelectorAll('.card');
   cards.forEach(card => {
-    if(card.getAttribute('style') === null) { //card is visible
-      visibleNames.push(card.lastChild.firstChild.textContent);
+    if(card.getAttribute('style') === null ||
+      card.getAttribute('style') === '') { //card is visible
+        visibleNames.push(card.lastChild.firstChild.textContent);
     }
   })
+  console.log(visibleNames);
   if(visibleNames.includes(modalName)) {
     return true;
   } else {
