@@ -3,7 +3,8 @@
 ======================================== */
 
 @import url('https://fonts.googleapis.com/css?family=Nunito');
-@import url('https://fonts.googleapis.com/css?family=Fredericka+the+Great|Michroma'); /*change/add*/
+/*change/add*/
+@import url('https://fonts.googleapis.com/css?family=Fredericka+the+Great|Michroma');
 
 * {
 	box-sizing: border-box;
@@ -15,7 +16,7 @@ html, body {
 }
 
 body {
-    font-family: 'Nunito', sans-serif; /*change*/
+    font-family: 'Nunito', sans-serif;
     text-align: center;
     background: rgba(0, 51, 102, 0.9); /*change*/
 }
