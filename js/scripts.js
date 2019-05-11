@@ -2,7 +2,7 @@
 *
 *   VARIABLE DECLARATIONS & PAGE SETUP
 *
-*   =============================================*/
+*   ============================================ */
 
 /** Number of users to fetch - variable makes program more robust for any future use */
 const userCount = 12;
@@ -21,7 +21,7 @@ const modalContainer = document.createElement('div');
 const prevButton = document.createElement('div');
 const nextButton = document.createElement('div');
 
-/** Markup generation for basic page setup*/
+/** Markup generation for basic page setup */
 modalContainer.setAttribute('class', 'modal-container');
 modalContainer.style.display = 'none';
 body.insertBefore(modalContainer, body.lastChild);
@@ -30,9 +30,8 @@ body.insertBefore(modalContainer, body.lastChild);
 *
 *   HELPER FUNCTIONS
 *
-*   =============================================*/
+*   ============================================ */
 
-/** inline comment */
 /**
  * Function to set multiple attributes on an element at once
  * @function
@@ -92,7 +91,7 @@ function determineMatchVisibility(modal) {
 *
 *  SEARCH MARKUP GENERATION
 *
-*  ==============================================*/
+*  ============================================= */
 
 /**
 * Create the search form, as well as its input field and its submit button and
@@ -111,7 +110,7 @@ searchContainer.appendChild(searchForm);
 *
 *   GALLERY MARKUP GENERATION
 *
-*   =============================================*/
+*   ============================================ */
 
 /**
  * Function to create gallery cards
@@ -183,7 +182,7 @@ generateGalleryCards(userCount);
 *
 *   MODAL MARKUP GENERATION
 *
-*   =============================================*/
+*   ============================================ */
 
 /**
  * Function to create modal items
@@ -297,7 +296,7 @@ createModalToggleButtons();
 *
 *   RANDOM USER GENERATOR API REQUEST LOGIC
 *
-*   =============================================*/
+*   ============================================ */
 
 /**
  * Function to fetch data from Random User Generator API
@@ -343,7 +342,7 @@ fetchData(url)
 *
 *   EVENT LISTENERS
 *
-*   =============================================*/
+*   ============================================ */
 
 /** Event listener to generate modal items when gallery cards are clicked */
 document.querySelectorAll('.card').forEach(card => {
