@@ -1,13 +1,19 @@
-/* ================================================
+/** ===============================================
 *
-*  VARIABLE DECLARATIONS & PAGE SETUP
+*   VARIABLE DECLARATIONS & PAGE SETUP
 *
-*  ==============================================*/
+*   =============================================*/
+
+/** Number of users to fetch - variable makes program more robust for any future use */
 const userCount = 12;
-//English alphabet nationalities in Random User Generator API:
-//AU, BR, CA, CH, DE, DK, ES, FI, FR, GB, IE, NO, NL, NZ, US
+/**
+ * English alphabet nationalities in Random User Generator API:
+ * AU, BR, CA, CH, DE, DK, ES, FI, FR, GB, IE, NO, NL, NZ, US
+ */
 const nationalities = '&nat=au,br,ca,ch,de,dk,es,fi,fr,gb,ie,no,nl,nz,us';
+/** URL for Random User Generator API fetch request (12 users, English alphabet only) */
 const url = `https://randomuser.me/api/?results=${userCount}${nationalities}`;
+/** Global variable declarations for page elements */
 const body = document.querySelector('body');
 const searchContainer = document.querySelector('.search-container');
 const gallery = document.querySelector('.gallery');
@@ -15,24 +21,40 @@ const modalContainer = document.createElement('div');
 const prevButton = document.createElement('div');
 const nextButton = document.createElement('div');
 
+/** Markup generation for basic page setup*/
 modalContainer.setAttribute('class', 'modal-container');
 modalContainer.style.display = 'none';
 body.insertBefore(modalContainer, body.lastChild);
 
-/* ================================================
+/** ===============================================
 *
-*  HELPER FUNCTIONS
+*   HELPER FUNCTIONS
 *
-*  ==============================================*/
+*   =============================================*/
 
-//function to set multiple attributes at once
+/** inline comment */
+/**
+ * Function to set multiple attributes on an element at once
+ * @function
+ * @name setAttributes
+ * @param {Object} element  - The element to be modified
+ * @param {Object} list  - key-value pairs of attributes and their values
+ */
 function setAttributes(element, list) {
   for(let attribute in list) {
     element.setAttribute(attribute, list[attribute]);
   }
 }
 
-//function to create elements, set their attributes, and initialize their text
+/**
+ * Function to create elements, set their attributes, and initialize their text
+ * @function
+ * @name initializeElement
+ * @param {string} elementName  - The type of element to be created
+ * @param {Object} attributes  - key-value pairs of attributes and their values
+ * @param {string} [text=null]  - optional string containing element's text content
+ * @returns {Object} - The created element
+ */
 function initializeElement(elementName, attributes, text = null) {
   const element = document.createElement(elementName);
   setAttributes(element, attributes);
@@ -42,18 +64,23 @@ function initializeElement(elementName, attributes, text = null) {
   return element;
 }
 
-//function to determine if modal item's corresponding card is visible
+/**
+ * Function to determine if modal item's corresponding gallery card is visible
+ * @function
+ * @name determineMatchVisibility
+ * @param {Object} modal  - The modal item being evaluated
+ * @returns {Boolean} - Whether or not the modal item's corresponding gallery card is visible
+ */
 function determineMatchVisibility(modal) {
   const modalName = modal.lastChild.childNodes[1].textContent;
   const visibleNames = [];
   const cards = document.querySelectorAll('.card');
   cards.forEach(card => {
     if(card.getAttribute('style') === null ||
-      card.getAttribute('style') === '') { //card is visible
+      card.getAttribute('style') === '') {
         visibleNames.push(card.lastChild.firstChild.textContent);
     }
   })
-  console.log(visibleNames);
   if(visibleNames.includes(modalName)) {
     return true;
   } else {
@@ -67,6 +94,10 @@ function determineMatchVisibility(modal) {
 *
 *  ==============================================*/
 
+/**
+* Create the search form, as well as its input field and its submit button and
+* append each of them to the document
+*/
 const searchForm = initializeElement('form', {'action':'#', 'method':'get'});
 const searchInput = initializeElement('input', {'type':'search',
   'class':'search-input', 'placeholder':'Search...'});
@@ -76,174 +107,205 @@ searchForm.appendChild(searchInput);
 searchForm.appendChild(submitButton);
 searchContainer.appendChild(searchForm);
 
-/* ================================================
+/** ===============================================
 *
-*  GALLERY MARKUP GENERATION
+*   GALLERY MARKUP GENERATION
 *
-*  ==============================================*/
+*   =============================================*/
 
-//function to create gallery cards
+/**
+ * Function to create gallery cards
+ * @function
+ * @name generateGalleryCards
+ * @param {number} count  - The number of gallery cards to create
+ */
 function generateGalleryCards(count) {
   for(let i = 0; i < count; i++) {
-    //create card div element
+    /** Create card div element */
     const card = initializeElement('div', {'class':'card'});
-    //create image container div element
+    /** Create image container div element */
     const imageContainer = initializeElement('div',
       {'class':'card-img-container'});
-    //create card img element
+    /** Create card img element */
     const image = initializeElement('img', {'class':'card-img',
       'src':'https://placehold.it/90x90', 'alt':'profile picture'});
-    //append img element to image container and image container to card
+    /** Append img element to image container and image container to card */
     imageContainer.appendChild(image);
     card.appendChild(imageContainer);
-    //create info container div element
+    /** Create info container div element */
     const infoContainer = initializeElement('div',
       {'class':'card-info-container'});
-    //create name h3 element
+    /** Create name h3 element */
     const name = initializeElement('h3', {'id':'name',
       'class':'card-name cap'}, 'first last');
-    //create email p element
+    /** Create email p element */
     const email = initializeElement('p', {'class':'card-text'}, 'email');
-    //create location p element
+    /** Create location p element */
     const location = initializeElement('p', {'class':'card-text cap'}, 'city');
-    //append name, email and location elements to info container
+    /** Append name, email and location elements to info container */
     infoContainer.appendChild(name);
     infoContainer.appendChild(email);
     infoContainer.appendChild(location);
-    //append info container to card
+    /** Append info container to card */
     card.appendChild(infoContainer);
-    //append card to gallery
+    /** Append card to gallery */
     gallery.appendChild(card);
   }
 }
 
-//function to populate gallery cards with random user information
+/**
+ * Function to populate gallery cards with random user information
+ * @function
+ * @name populateCards
+ * @param {Object[]} users  - The user information to populate the cards with
+ */
 function populateCards(users) {
   const cards = document.querySelectorAll('.card');
   for(let i = 0; i < cards.length; i++) {
     const card = cards[i];
     const user = users[i];
-    //set card's image to user's profile picture
+    /** Set card's image to user's profile picture */
     card.firstChild.firstChild.setAttribute('src', user.picture.large);
-    //set card's name to user's name
+    /** Set card's name to user's name */
     card.lastChild.firstChild
       .textContent = `${user.name.first} ${user.name.last}`;
-    //set card's email to user's email
+    /** Set card's email to user's email */
     card.lastChild.childNodes[1].textContent = user.email;
-    //set card's city to user's city
+    /** Set card's city to user's city */
     card.lastChild.lastChild.textContent = `${user.location.city}`;
   }
 }
 
-//create gallery cards
+/** Create gallery cards */
 generateGalleryCards(userCount);
 
-/* ================================================
+/** ===============================================
 *
-*  MODAL MARKUP GENERATION
+*   MODAL MARKUP GENERATION
 *
-*  ==============================================*/
+*   =============================================*/
 
-//function to create a modal item
+/**
+ * Function to create modal items
+ * @function
+ * @name generateModalItems
+ * @param {number} count  - The number of gallery modal items to create
+ */
 function generateModalItems(count) {
   for(let i = 0; i < count; i++) {
-    //create modal div element
+    /** Create modal div element */
     const modal = initializeElement('div', {'class':'modal'});
-    //create and append modal close button markup
+    /** Create and append modal close button markup */
     const closeButton = initializeElement('button',
       {'type':'button', 'class':'modal-close-btn'});
     closeButton.innerHTML = `<strong>X</strong>`;
     modal.appendChild(closeButton);
-    //create modal info container
+    /** Create modal info container */
     const infoContainer = initializeElement('div',
       {'class':'modal-info-container'});
-    //create and append modal image markup
+    /** Create and append modal image markup */
     const image = initializeElement('img', {'class':'modal-img',
       'src':'https://placehold.it/125x125', 'alt':'profile picture'});
     infoContainer.appendChild(image);
-    //create and append modal name markup
+    /** Create and append modal name markup */
     const name = initializeElement('h3', {'class':'modal-name cap'}, 'first last');
     infoContainer.appendChild(name);
-    //create and append modal email markup
+    /** Create and append modal email markup */
     const email = initializeElement('p', {'class':'modal-text'}, 'email');
     infoContainer.appendChild(email);
-    //create and append modal city markup
+    /** Create and append modal city markup */
     const city = initializeElement('p', {'class':'modal-text cap'}, 'city');
     infoContainer.appendChild(city);
-    //create and append modal hr markup
+    /** Create and append modal hr markup */
     const hr = document.createElement('hr');
     infoContainer.appendChild(hr);
-    //create and append modal phone markup
+    /** Create and append modal phone markup */
     const phone = initializeElement('p', {'class':'modal-text'}, 'phone');
     infoContainer.appendChild(phone);
-    //create and append modal address markup
+    /** Create and append modal address markup */
     const address = initializeElement('p', {'class':'modal-text'}, 'address');
     infoContainer.appendChild(address);
-    //create and append modal date of birth markup
+    /** Create and append modal date of birth markup */
     const dob = initializeElement('p', {'class':'modal-text'}, 'dob');
     infoContainer.appendChild(dob);
-    //append modal info container to modal item and remove it from view
+    /** Append modal info container to modal item and remove it from view */
     modal.appendChild(infoContainer);
     modal.style.display = 'none';
-    //append modal item to modal container
+    /** Append modal item to modal container */
     modalContainer.appendChild(modal);
   }
 }
 
-//function to populate modal items with random user information
+/**
+ * Function to populate modal items with random user information
+ * @function
+ * @name populateModalItems
+ * @param {Object[]} users  - The user information to populate the modal items with
+ */
 function populateModalItems(users) {
   const modals = document.querySelectorAll('.modal');
   for(let i = 0; i < modals.length; i++) {
     const modal = modals[i];
     const user = users[i];
     const formatedDOB = user.dob.date.substring(0, user.dob.date.indexOf('T'));
-    //set modal item's image to user's profile picture
+    /** Set modal item's image to user's profile picture */
     modal.lastChild.firstChild.setAttribute('src', user.picture.large);
-    //set modal item's name to user's name
+    /** Set modal item's name to user's name */
     modal.lastChild.childNodes[1]
       .textContent = `${user.name.first} ${user.name.last}`;
-    //set modal item's email to user's email
+    /** Set modal item's email to user's email */
     modal.lastChild.childNodes[2].textContent = user.email;
-    //set modal item's city to user's city
+    /** Set modal item's city to user's city */
     modal.lastChild.childNodes[3].textContent = user.location.city;
-    //set modal item's cell phone to user's cell phone
+    /** Set modal item's cell phone to user's cell phone */
     modal.lastChild.childNodes[5].textContent = user.cell;
-    //set modal item's address to user's address
+    /** Set modal item's address to user's address */
     modal.lastChild.childNodes[6]
       .textContent = `${user.location.street}, ${user.location.state} ${user.location.postcode}`;
-    //set modal item's date of birth to user's date of birth
+    /** Set modal item's date of birth to user's date of birth */
     modal.lastChild.lastChild.textContent = formatedDOB;
   }
 }
 
-//function to create 'previous' and 'next' buttons in the modal container
+/**
+ * Function to create 'previous' and 'next' buttons in the modal container
+ * @function
+ * @name createModalToggleButtons
+ */
 function createModalToggleButtons() {
   const modalButtonContainer = initializeElement('div',
     {'class':'modal-btn-container'});
-  //set attributes for 'previous' button
+  /** Set attributes for 'previous' button */
   setAttributes(prevButton, {'type':'button', 'id':'modal-prev',
     'class':'modal-prev btn', });
   prevButton.textContent = 'Prev';
-  //set attributes for 'next' button
+  /** Set attributes for 'next' button */
   setAttributes(nextButton, {'type':'button', 'id':'modal-next',
     'class':'modal-next btn', });
   nextButton.textContent = 'Next';
+  /** Append the 'previous' and 'next' buttons to the modal container */
   modalButtonContainer.appendChild(prevButton);
   modalButtonContainer.appendChild(nextButton);
   modalContainer.appendChild(modalButtonContainer);
 }
 
-//create modal items and buttons
+/** Create modal items and buttons */
 generateModalItems(userCount);
 createModalToggleButtons();
 
-/* ================================================
+/** ===============================================
 *
-*  RANDOM USER GENERATOR API REQUEST LOGIC
+*   RANDOM USER GENERATOR API REQUEST LOGIC
 *
-*  ==============================================*/
+*   =============================================*/
 
-//function to fetch data from Random User Generator API
+/**
+ * Function to fetch data from Random User Generator API
+ * @function
+ * @name fetchData
+ * @param {string} url  - The url containing the resources for the request
+ * @returns {Object} - Response to the API data fetch request
+ */
 function fetchData(url) {
   return fetch(url)
            .then(checkStatus)
@@ -252,7 +314,13 @@ function fetchData(url) {
              .log('Something went wrong with the request: ', error))
 }
 
-//function to check the status of API requests
+/**
+ * Function to check the status of API requests
+ * @function
+ * @name checkStatus
+ * @param {Object} response  - Response to a previous API data fetch request
+ * @returns {Promise} - Promise that has either been resolved or rejected based on response status
+ */
 function checkStatus(response) {
   if(response.ok){
     return Promise.resolve(response);
@@ -261,7 +329,7 @@ function checkStatus(response) {
   }
 }
 
-//logic/processing area
+/** Processing area */
 fetchData(url)
   .then(data => {
     populateCards(data.results);
@@ -271,13 +339,13 @@ fetchData(url)
   .catch(error => console.log('There was an error...', error));
 
 
-/* ================================================
+/** ===============================================
 *
-*  EVENT LISTENERS
+*   EVENT LISTENERS
 *
-*  ==============================================*/
+*   =============================================*/
 
-//event listener to generate modal items when gallery cards are clicked
+/** Event listener to generate modal items when gallery cards are clicked */
 document.querySelectorAll('.card').forEach(card => {
   card.addEventListener('click', function() {
     document.querySelectorAll('.modal').forEach(modal => {
@@ -290,7 +358,7 @@ document.querySelectorAll('.card').forEach(card => {
   })
 })
 
-//event listener to close modal window when modal close button is clicked
+/** Event listener to close modal window when modal 'close' button is clicked */
 document.querySelectorAll('.modal-close-btn').forEach(button => {
   button.addEventListener('click', function() {
     this.parentNode.style.display = 'none';
@@ -298,8 +366,10 @@ document.querySelectorAll('.modal-close-btn').forEach(button => {
   })
 })
 
-//event listener to filter the gallery cards based on the search term
-//in the input field within the search form
+/**
+ * Event listener to filter the gallery cards based on the search term
+ * within the search form's input field
+ */
 searchForm.addEventListener('submit', function() {
   const input = document.querySelector('.search-input');
   document.querySelectorAll('.card').forEach(card => {
@@ -312,35 +382,31 @@ searchForm.addEventListener('submit', function() {
   })
 })
 
-//event listeners to switch between different users in the modal window
-//'previous' button event listener
+/** Event listener to move to previous user(s) in the modal window */
 prevButton.addEventListener('click', function() {
   document.querySelectorAll('.modal').forEach(modal => {
     let foundVisiblePrev = false;
     let prevModal = modal.previousElementSibling;
-    //modal item for first gallery card is invalid as there are
-    //no elements before it in the list
-    //find current open modal item that isn't the first
+    /** Find current open modal item that isn't the first in the list */
     if(modal.style.display === '' && prevModal !== null) {
-      //if previous modal item's card is visible in the gallery
-      //you are good to go
+      /** Previous modal item's card is visible in the gallery - can proceed */
       if(determineMatchVisibility(prevModal)) {
         foundVisiblePrev = true;
       } else {
-          //if previous modal item's card is invisible,
-          //find most recent visible previous valid card
-          //while valid previous modal item isn't found
+          /**
+           * Previous modal item's gallery card is invisible - find most recent,
+           * previous & visible gallery card
+           */
           while(!foundVisiblePrev && prevModal.previousElementSibling !== null) {
-            //move to next most previous modal item
             prevModal = prevModal.previousElementSibling;
-            //check if this item has a visible gallery card
             if(determineMatchVisibility(prevModal)) {
-              foundVisiblePrev = true; //found viable previous modal item
+              /** Found most recent, previous & visible gallery card */
+              foundVisiblePrev = true;
             }
-          } //no more modal items to process
+          }
       }
       if(foundVisiblePrev) {
-        //previous modal item's matching gallery card is visible, can proceed
+        /** Previous modal item's matching gallery card is visible - can proceed */
         modal.style.display = 'none';
         prevModal.style.display = '';
       }
@@ -348,29 +414,40 @@ prevButton.addEventListener('click', function() {
   })
 })
 
-//'next' button event listener
+/** Event listener to move to next user(s) in the modal window */
 nextButton.addEventListener('click', function() {
-  //flag turns off once we have met the first open modal item; prevents the
-  //event listener from processing each item as valid until the end of the list
+  /**
+   * Flag turns off once the first open modal item has been met; prevents the
+   * event listener from processing each subsequent item as valid until
+   * the end of the list
+   */
   let flag = true;
   document.querySelectorAll('.modal').forEach(modal => {
     let foundVisibleNext = false;
     let nextModal = modal.nextElementSibling;
+    /** Find current open modal item that isn't the last in the list */
     if(modal.style.display === '' &&
       modal.nextElementSibling.className !== 'modal-btn-container' && flag) {
+        /** Next modal item's card is visible in the gallery - can proceed */
         if(determineMatchVisibility(nextModal)) {
           foundVisibleNext = true;
         } else {
+          /**
+           * Next modal item's gallery card is invisible - find the next
+           * visible gallery card
+           */
             while(!foundVisibleNext &&
               nextModal.nextElementSibling.className !== 'modal-btn-container') {
                 nextModal = nextModal.nextElementSibling;
                 if(determineMatchVisibility(nextModal)) {
+                  /** Found next visible gallery card */
                   foundVisibleNext = true;
                 }
             }
         }
     }
     if(foundVisibleNext) {
+      /** Next modal item's matching gallery card is visible - can proceed */
       modal.style.display = 'none';
       nextModal.style.display = '';
       flag = false;
