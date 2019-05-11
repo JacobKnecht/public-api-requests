@@ -147,6 +147,8 @@ function generateGalleryCards(count) {
     infoContainer.appendChild(location);
     /** Append info container to card */
     card.appendChild(infoContainer);
+    /** Hide the card from the display until it has employee information */
+    card.style.display = 'none';
     /** Append card to gallery */
     gallery.appendChild(card);
   }
@@ -172,6 +174,8 @@ function populateCards(users) {
     card.lastChild.childNodes[1].textContent = user.email;
     /** Set card's city to user's city */
     card.lastChild.lastChild.textContent = `${user.location.city}`;
+    /** Card has employee information - okay to display it in the gallery */
+    card.style.display = '';
   }
 }
 
