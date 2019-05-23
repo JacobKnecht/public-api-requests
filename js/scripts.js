@@ -373,7 +373,8 @@ document.querySelectorAll('.modal-close-btn').forEach(button => {
  * Event listener to filter the gallery cards based on the search term
  * within the search form's input field
  */
-searchForm.addEventListener('submit', function() {
+searchForm.addEventListener('submit', function(e) {
+  e.preventDefault();
   const input = document.querySelector('.search-input');
   document.querySelectorAll('.card').forEach(card => {
     const name = card.lastChild.firstChild.textContent.toLowerCase();
